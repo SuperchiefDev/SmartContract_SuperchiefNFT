@@ -41,6 +41,7 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     uint256 firstTokenId,
     uint256 batchSize
   );
+  event SuperChiefNftMinted(uint256 tokenId, address owner, uint256 amount, string tokenUri);
 
   /**
    * @dev sets contract params
@@ -85,7 +86,12 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     );
     require(msg.value == _count * config.price, "SuperChiefEdition: invalid price");
 
+    uint256 startTokenId = totalSupply() + 1;
     _mint(_receiver, _count);
+
+    for(uint256 i = 0; i < _count; i++) {
+      emit SuperChiefNftMinted(startTokenId + i, msg.sender, 1, tokenURI(startTokenId + i));
+    }
   }
 
   modifier onlyWhitelistedContract() {
