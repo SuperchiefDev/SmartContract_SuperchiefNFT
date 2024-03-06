@@ -94,12 +94,6 @@ describe("AuctionManager test", () => {
   });
 
   it("start auction", async () => {
-    await advanceBlockTo(99);
-
-    auctionId = solidityKeccak256(
-      ["address", "address", "uint256", "address", "uint256", "uint256"],
-      [deployer.address, nft.address, 1, token.address, parseUnits("1"), 100],
-    );
     const currentTime = await getTime();
     const sign = await signToCreate(deployer.address, nft.address, 1, 1, [
       {
@@ -128,6 +122,12 @@ describe("AuctionManager test", () => {
         sign,
       ),
     ).to.emit(auctionManager, "NewAuction");
+
+    const blockNumber = await ship.provider.getBlockNumber();
+    auctionId = solidityKeccak256(
+      ["address", "address", "uint256", "address", "uint256", "uint256"],
+      [deployer.address, nft.address, 1, token.address, parseUnits("1"), blockNumber],
+    );
 
     const auctionData = await auctionManager.auctions(auctionId);
     expect(auctionData.assetType).to.eq(0);

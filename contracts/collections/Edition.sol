@@ -23,6 +23,13 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
   /// @dev address public executionDelegate
   IExecutionDelegate public executionDelegate;
 
+  /// @dev new edition added
+  event SuperChiefEditionCreated(
+    address indexed edition,
+    string name,
+    string symbol,
+    string contractURI
+  );
   /// @dev fires when contract uri changed
   event ContractURIChanged(string _contractURI);
   /**
@@ -57,7 +64,7 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     baseUri = _baseUri;
     config = _config;
 
-    emit ContractURIChanged(_contractURI);
+    emit SuperChiefEditionCreated(address(this), _name, _symbol, _contractURI);
   }
 
   /**

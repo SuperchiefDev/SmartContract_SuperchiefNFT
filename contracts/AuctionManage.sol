@@ -161,7 +161,7 @@ contract AuctionManager is
         ""
       );
     }
-
+    
     emit NewAuction(
       id,
       _param.collection,
