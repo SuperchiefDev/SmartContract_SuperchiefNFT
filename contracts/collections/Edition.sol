@@ -29,7 +29,9 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     string name,
     string symbol,
     string contractURI,
-    EditionConfig config
+    EditionConfig config,
+    address feeReceiver,
+    uint96 feeRate
   );
   /// @dev fires when contract uri changed
   event ContractURIChanged(string _contractURI);
@@ -51,6 +53,8 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
    * @param _contractURI uri of contract
    * @param _executionDelegate execution delegate address
    * @param _config config of edition
+   * @param _feeRate artist loyalty rate
+   * @param _receiver loyalty receiver address
    */
   constructor(
     string memory _name,
@@ -58,7 +62,9 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     string memory _contractURI,
     string memory _baseUri,
     address _executionDelegate,
-    EditionConfig memory _config
+    EditionConfig memory _config,
+    uint96 _feeRate,
+    address _receiver
   ) ERC721A(_name, _symbol) {
     executionDelegate = IExecutionDelegate(_executionDelegate);
 
@@ -66,7 +72,17 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     baseUri = _baseUri;
     config = _config;
 
-    emit SuperChiefEditionCreated(address(this), _name, _symbol, _contractURI, config);
+    _setDefaultRoyalty(_receiver, _feeRate);
+
+    emit SuperChiefEditionCreated(
+      address(this),
+      _name,
+      _symbol,
+      _contractURI,
+      config,
+      _receiver,
+      _feeRate
+    );
   }
 
   /**
@@ -90,7 +106,7 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     uint256 startTokenId = totalSupply() + 1;
     _mint(_receiver, _count);
 
-    for(uint256 i = 0; i < _count; i++) {
+    for (uint256 i = 0; i < _count; i++) {
       emit SuperChiefNftMinted(startTokenId + i, msg.sender, 1, tokenURI(startTokenId + i));
     }
   }
@@ -159,6 +175,15 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     contractURI = _contractURI;
 
     emit ContractURIChanged(_contractURI);
+  }
+
+  /**
+   * @dev set artist royalty data
+   * @param _receiver fee receiver address
+   * @param _feeRate fee rate
+   */
+  function setRoyalty(address _receiver, uint96 _feeRate) external onlyOwner {
+    _setDefaultRoyalty(_receiver, _feeRate);
   }
 
   /**
