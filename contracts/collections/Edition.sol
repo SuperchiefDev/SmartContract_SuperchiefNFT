@@ -53,8 +53,8 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
    * @param _contractURI uri of contract
    * @param _executionDelegate execution delegate address
    * @param _config config of edition
-   * @param _feeRate artist loyalty rate
-   * @param _receiver loyalty receiver address
+   * @param _feeRate artist royalty rate
+   * @param _receiver royalty receiver address
    */
   constructor(
     string memory _name,
