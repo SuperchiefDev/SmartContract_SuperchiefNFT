@@ -15,7 +15,7 @@ import {Sig, EditionConfig} from "../libraries/Structs.sol";
 contract Edition is ERC721ABurnable, ERC2981, Destroyable {
   /// @dev collection params
   string public contractURI;
-  string private baseUri;
+  string private tokenUri;
 
   /// @dev edition config
   EditionConfig public config;
@@ -60,7 +60,7 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     string memory _name,
     string memory _symbol,
     string memory _contractURI,
-    string memory _baseUri,
+    string memory _tokenUri,
     address _executionDelegate,
     EditionConfig memory _config,
     uint96 _feeRate,
@@ -69,7 +69,7 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
     executionDelegate = IExecutionDelegate(_executionDelegate);
 
     contractURI = _contractURI;
-    baseUri = _baseUri;
+    tokenUri = _tokenUri;
     config = _config;
 
     _setDefaultRoyalty(_receiver, _feeRate);
@@ -143,7 +143,7 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
   ) public view virtual override(ERC721A, IERC721A) returns (string memory) {
     if (!_exists(tokenId)) revert URIQueryForNonexistentToken();
 
-    return bytes(baseUri).length != 0 ? string(abi.encodePacked(baseUri, tokenId, ".json")) : "";
+    return tokenUri;
   }
 
   /**
@@ -158,8 +158,8 @@ contract Edition is ERC721ABurnable, ERC2981, Destroyable {
    * @dev update edition base uri
    * @param _uri new uri to update
    */
-  function updateBaseURI(string calldata _uri) external onlyOwner {
-    baseUri = _uri;
+  function updateTokenUri(string calldata _uri) external onlyOwner {
+    tokenUri = _uri;
   }
 
   /**
