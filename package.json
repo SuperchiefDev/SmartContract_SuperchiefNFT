@@ -68,19 +68,15 @@
     "node": "^14.0.0 || ^16.0.0 || ^18.0.0"
   },
   "dependencies": {
-    "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@openzeppelin/contracts": "^4.9.2",
     "@openzeppelin/contracts-upgradeable": "^4.9.2",
-    "erc721a": "^4.2.3",
-    "eth-permit": "^0.2.1",
-    "web3": "^1.7.4"
+    "erc721a": "^4.2.3"
   },
   "devDependencies": {
-    "@boringcrypto/boring-solidity": "boringcrypto/BoringSolidity#e06e943",
+    "@nomicfoundation/hardhat-chai-matchers": "^2.0.6",
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers@0.3.0-beta.13",
     "@nomiclabs/hardhat-etherscan": "^3.0.3",
     "@nomiclabs/hardhat-waffle": "^2.0.3",
-    "@tenderly/hardhat-tenderly": "^1.0.13",
     "@typechain/ethers-v5": "^10.0.0",
     "@typechain/hardhat": "^6.0.0",
     "@types/chai": "^4.3.1",
